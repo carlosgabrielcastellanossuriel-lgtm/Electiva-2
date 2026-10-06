@@ -1,0 +1,28 @@
+name: Notificacion Push Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  notificar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar codigo del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Compilar y ejecutar C#
+        run: dotnet run
+
+      - name: Enviar mensaje a ntfy
+        run: |
+          curl -d "¡Nuevo codigo en C# subido a la rama main correctamente!" \
+               -H "Title: DevOps ITLA" \
+               -H "Tags: rocket,heavy_check_mark" \
+               https://ntfy.sh/devops-itla
